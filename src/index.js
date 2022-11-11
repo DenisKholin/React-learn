@@ -12,11 +12,17 @@ const Header = () => {
 }
 
 const Input = () => {
-	return <input type="text" placeholder='WHAT U WANT?' />;
+	return <input
+		type="text"
+		placeholder='WHAT U WANT?'
+		className='input' />;
 }
 
 const Button = () => {
-	return <button>LETS GO</button>;
+	const res = (a, b) => {
+		return a * b;
+	}
+	return <button>{res(17, 3)}</button>;
 }
 
 const App = () => {
