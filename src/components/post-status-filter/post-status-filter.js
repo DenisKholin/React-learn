@@ -1,3 +1,5 @@
+import './post-status-filter'
+
 const PostStatusFilter = () => {
 	return (
 		<div className="btn-group">

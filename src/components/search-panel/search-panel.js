@@ -1,3 +1,5 @@
+import './search-panel.css'
+
 const SeacrhPanel = () => {
 	return (
 		<input
