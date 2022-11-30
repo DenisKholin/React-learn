@@ -14,9 +14,9 @@ export default class App extends Component {
 	}
 	state = {
 		data: [
-			{ label: 'My', important: true, id: 'qweq' },
-			{ label: 'name', important: false, id: 'dsf' },
-			{ label: 'who', important: false, id: 'hgt' },
+			{ label: 'My', important: true, like: false, id: 'qweq' },
+			{ label: 'name', important: false, like: false, id: 'dsf' },
+			{ label: 'who', important: false, like: false, id: 'hgt' },
 		]
 	};
 
@@ -26,7 +26,6 @@ export default class App extends Component {
 
 			const index = data.findIndex(elem => elem.id === id);
 			const newArr = [...data.slice(0, index), ...data.slice(index + 1)];
-
 
 			return {
 				data: newArr
@@ -49,17 +48,56 @@ export default class App extends Component {
 		})
 	}
 
+	onToggleImportant = (id) => {
+		this.setState(({ data }) => {
+
+			const
+				index = data.findIndex(elem => elem.id === id),
+				newItem = { ...data[index], important: !data[index].important },
+				newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+			return {
+				data: newArr
+			}
+		})
+	}
+
+
+	onToggleLiked = (id) => {
+		this.setState(({ data }) => {
+
+			const
+				index = data.findIndex(elem => elem.id === id),
+				newItem = { ...data[index], like: !data[index].like },
+				newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+			return {
+				data: newArr
+			}
+		})
+	}
+
 	render() {
+
+		const
+			{ data } = this.state,
+			liked = data.filter(el => el.like).length,
+			allPosts = data.length;
+
 		return (
 			<div className="app" >
-				<AppHeader />
+				<AppHeader
+					liked={liked}
+					allPosts={allPosts} />
 				<div className="search-panel d-flex">
 					<SeacrhPanel />
 					<PostStatusFilter />
 				</div>
 				<PostList
 					posts={this.state.data}
-					onDelete={this.deleteItem} />
+					onDelete={this.deleteItem}
+					onToggleImportant={this.onToggleImportant}
+					onToggleLiked={this.onToggleLiked} />
 				<PostAddForm
 					onAdd={this.addItem} />
 			</div>
