@@ -8,24 +8,45 @@ import PostAddForm from "../post-add-form/post-add-form";
 import './app.css'
 
 export default class App extends Component {
+	constructor(props) {
+		super(props);
+		this.maxId = 4;
+	}
 	state = {
 		data: [
 			{ label: 'My', important: true, id: 'qweq' },
 			{ label: 'name', important: false, id: 'dsf' },
 			{ label: 'who', important: false, id: 'hgt' },
 		]
+	};
+
+
+	deleteItem = (id) => {
+		this.setState(({ data }) => {
+
+			const index = data.findIndex(elem => elem.id === id);
+			const newArr = [...data.slice(0, index), ...data.slice(index + 1)];
+
+
+			return {
+				data: newArr
+			}
+		});
 	}
 
-	deleteItem = id => {
-		this.setState(({ data }) => {
-			const index = data.findIndex(elem => elem.id === id);
+	addItem = (body) => {
+		const newItem = {
+			label: body,
+			important: false,
+			id: this.maxId++
+		}
 
-			const newArray = [...data.slice(0, index), ...data.slice(index + 1)];
-			// console.log(newArray)
-			return (
-				data: newArray
-			)
-		});
+		this.setState(({ data }) => {
+			const newArr = [...data, newItem];
+			return {
+				data: newArr
+			}
+		})
 	}
 
 	render() {
@@ -39,7 +60,8 @@ export default class App extends Component {
 				<PostList
 					posts={this.state.data}
 					onDelete={this.deleteItem} />
-				<PostAddForm />
+				<PostAddForm
+					onAdd={this.addItem} />
 			</div>
 
 		)
