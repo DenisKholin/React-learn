@@ -17,7 +17,8 @@ export default class App extends Component {
 			{ label: 'My', important: true, like: false, id: 'qweq' },
 			{ label: 'name', important: false, like: false, id: 'dsf' },
 			{ label: 'who', important: false, like: false, id: 'hgt' },
-		]
+		],
+		term: ''
 	};
 
 
@@ -77,12 +78,24 @@ export default class App extends Component {
 		})
 	}
 
+	searchPost = (items, term) => {
+		if (term.length === 0) {
+			return items
+		}
+
+		return items.filter(item => {
+			return item.label.indexOf(term) > -1
+		})
+	}
+
 	render() {
 
 		const
-			{ data } = this.state,
+			{ data, term } = this.state,
 			liked = data.filter(el => el.like).length,
 			allPosts = data.length;
+
+		const visiblePosts = this.searchPost(data, term);
 
 		return (
 			<div className="app" >
@@ -94,7 +107,7 @@ export default class App extends Component {
 					<PostStatusFilter />
 				</div>
 				<PostList
-					posts={this.state.data}
+					posts={visiblePosts}
 					onDelete={this.deleteItem}
 					onToggleImportant={this.onToggleImportant}
 					onToggleLiked={this.onToggleLiked} />
